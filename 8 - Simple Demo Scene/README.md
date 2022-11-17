@@ -16,22 +16,17 @@ To Run:
 4) Command Hotkeys:
 (Also available in the Documentation)
 
-	  Left Paddle:
-|Command	|Hotkey		|
-|-------------------------------|
+	Left Paddle:
+|Command	|Hotkey	|
+|-------------------|
 |move up	|W		|
 |move down	|S		|
 
 
-	  Right Paddle:
-|Command	|Hotkey		|
-|-------------------------------|
+	Right Paddle:
+|Command	|Hotkey	|
+|-------------------|
 |move up	|U		|
 |move down	|J		|
-
-
-
-
-
 
 
