@@ -9,7 +9,7 @@
 GLfloat ballPosY = 0;
 GLfloat ballPosX = 0;
 GLfloat ballVelY = 0;
-GLfloat ballVelX = 2;
+GLfloat ballVelX = 1.5;
 
 GLfloat paddle1Y = 0;
 GLfloat paddle2Y = 0;
@@ -27,6 +27,8 @@ bool wDown = false;
 bool sDown = false;
 bool upDown = false;
 bool downDown = false;
+
+bool endGame = false;
 
 namespace Paddle {
 
@@ -97,18 +99,28 @@ namespace ScoreBoard {
 
       glBegin(GL_QUADS);
 
+      if (p1Points >= 5)
+      {
+        glColor3f(0, 1, 0);
+      }
       // Player 1 Scoreboard
       glVertex3f(-5 + p1, 5, 0);
       glVertex3f(-5 + p1, 6, 0);
       glVertex3f(-5, 6, 0);
       glVertex3f(-5, 5, 0);
-      
+
+      glColor3f(1, 1, 1);
+      if (p2Points >= 5)
+      {
+        glColor3f(0, 1, 0);
+      }
       // Player 2 Scoreboard
       glVertex3f(5, 5, 0);
       glVertex3f(5, 6, 0);
       glVertex3f(5 - p2, 6, 0);
       glVertex3f(5 - p2, 5, 0);
 
+      glColor3f(1, 1, 1);
       glEnd();
     }
 }
@@ -118,13 +130,15 @@ void display() {
 
   Board::draw();
 
+  if (!endGame)
+  {
   //paddle 1
   Paddle::draw(-10, paddle1Y);
   //paddle 2
   Paddle::draw(10.5, paddle2Y);
 
   Ball::draw(ballPosX, ballPosY);
-
+  }
   ScoreBoard::draw(p1Points, p2Points);
 
   glFlush();
@@ -137,6 +151,11 @@ void timer(int v) {
   oldTimeSinceStart = timeSinceStart;
 
   GLfloat dt = (GLfloat)deltaTime/1000;
+
+  if (!endGame)
+  {
+
+  
 
   if (wDown)
   {
@@ -187,6 +206,11 @@ void timer(int v) {
             ballPosX = 5;
             ballVelY = 0;
             ballVelX = -ballSpeed;
+
+            if (p1Points >= 5)
+            {
+              endGame = true;
+            }
         }
     }
     else if (ballPosX <= -9.75)
@@ -208,14 +232,37 @@ void timer(int v) {
             ballPosX = -5;
             ballVelY = 0;
             ballVelX = ballSpeed;
+
+            if (p2Points >= 5)
+            {
+              endGame = true;
+            }
         }
     }
 
     ballPosY += ballVelY*.03;
     ballPosX += ballVelX*.03;
 
+
+  }
+
   glutPostRedisplay();
   glutTimerFunc(1000/60.0, timer, v);
+}
+
+void restart()
+{
+  p1Points = 0;
+  p2Points = 0;
+  endGame = false;
+  paddle1Y = 0;
+  paddle2Y = 0;
+
+  ballPosY = 0;
+  ballPosX = 0;
+  ballSpeed = 3;
+  ballVelX = 1.5;
+  ballVelY = 0;
 }
 
 void reshape(int w, int h) {
@@ -243,6 +290,8 @@ void keyDown (unsigned char key, int x, int y)
   //printf("%i", key);
   if (key == 27) //escape
 		exit(0);
+  if (key == 114) //r
+    restart();
   if (key == 119) //w
     wDown = true;
   if (key == 115) //s

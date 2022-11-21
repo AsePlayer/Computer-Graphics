@@ -29,4 +29,4 @@ To Run:
 |move up	|U		|
 |move down	|J		|
 
-
+The game stops when a player reaches 5 points and you can restart it with 'R'
